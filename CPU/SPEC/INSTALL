@@ -3,47 +3,52 @@ SPEC benchmark CPU2006
 mkdir spec06 SpecCpu2006
 
 1.Mount:
-sudo mount -t iso9660 -o ro /home/palms_admin/CPU2006v1.0.1.iso /home/palms_admin/spec06/
+	sudo mount -t iso9660 -o ro /home/palms_admin/CPU2006v1.0.1.iso /home/palms_admin/spec06/
 
 2.Installiation:
+	cd spec06
+	./install.sh
+		set dir: /home/palms_admin/SpecCpu2006
+		set arch
+	cd ../SpecCpu2006
+	. ./shrc
+	cd config
+	cp linux64-amd64-gcc42.cfg test.cfg
+3. Modify test.cfg
+	vim test.cfg
+		change gcc path
+		#####################################################################
+		#
+		# Compiler selection
+		#
+		#####################################################################
+		CC           = /usr/bin/gcc 
+		CXX          = /usr/bin/g++
+		#FC           = /usr/local/sles9/gcc42-0325/bin/gfortran
 
-cd spec06
+		add library for 483. axlancbmk otherwise it will fail to build
+		#####################################################################
+		# Optimization
+		#####################################################################
+		## Base is low opt
+		default=base=default=default:
+		COPTIMIZE     = -O2 -include cstdlib -include cstring
+		CXXOPTIMIZE  = -O2 -include cstdlib -include cstring
+		FOPTIMIZE    = -O2
 
-./install.sh
 
-/home/palms_admin/SpecCpu2006
+4. Build a benchmark(e.g. bzip2)
 
-cd ../SpecCpu2006
+	runspec --config=test.cfg --action=build --tune=base bzip2
 
-. ./shrc
+	#it might have something wrong, you have to install the following
+	#sudo apt-get install libc6-dev-i386
 
-cd config
+5. Run a benchmark(e.g. bzip2)
 
-cp linux64-amd64-gcc42.cfg test.cfg
-
-Modify test.cfg
-
-vim test.cfg
-
-######
-
-CC           = /usr/bin/gcc
-CXX          = /usr/bin/g++
-#FC           = /usr/local/sles9/gcc42-0325/bin/gfortran
-
-#######
-Build a benchmark(e.g. bzip2)
-
-runspec --config=test.cfg --action=build --tune=base bzip2
-
-#it might have something wrong, you have to install the following
-#sudo apt-get install libc6-dev-i386
-
-Run a benchmark(e.g. bzip2)
-
-runspec --config=test.cfg --size=test --noreportable --tune=base --iterations=1 bzip2
-or
-runspec --config=test.cfg --size=ref --noreportable --tune=base --iterations=1 bzip2
+	runspec --config=test.cfg --size=test --noreportable --tune=base --iterations=1 bzip2
+	or
+	runspec --config=test.cfg --size=ref --noreportable --tune=base --iterations=1 bzip2
 
 Other benchmarks: 
 perlbench bzip2 gcc mcf milc namd gobmk soplex povray hmmer sjeng libquantum h264ref lbm omnetpp astar
