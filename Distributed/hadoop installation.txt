@@ -96,8 +96,11 @@ On master node:
   Stop HDFS:
 	stop-dfs.sh
 
-
-
+  After VM Reboot:
+    rm -r ~/data/tmp/* on all the nodes
+	hadoop namenode -format
+	start-dfs.sh
+	start-mapred.sh
 
 Hadoop benchmark:
 
@@ -118,3 +121,4 @@ Hadoop benchmark:
 4. nnbench
   hadoop jar hadoop-*test*.jar nnbench -operation create_write -maps 2 -reduces 2 -blockSize 1 -bytesToWrite 0 -numberOfFiles 200 -replicationFactorPerFile 2 -readFileAfterOpen true -baseDir /benchmarks/NNBench-`hostname -s`
   
+
