@@ -16,7 +16,7 @@ mkdir spec06 SpecCpu2006
 	cp linux64-amd64-gcc42.cfg test.cfg
 3. Modify test.cfg
 	vim test.cfg
-		change gcc path
+		#change gcc path
 		#####################################################################
 		#
 		# Compiler selection
@@ -26,7 +26,7 @@ mkdir spec06 SpecCpu2006
 		CXX          = /usr/bin/g++
 		#FC           = /usr/local/sles9/gcc42-0325/bin/gfortran
 
-		add library for 483. axlancbmk otherwise it will fail to build
+		#add library cstdlib cstring for 483. axlancbmk otherwise it will fail to build
 		#####################################################################
 		# Optimization
 		#####################################################################
@@ -49,6 +49,11 @@ mkdir spec06 SpecCpu2006
 	runspec --config=test.cfg --size=test --noreportable --tune=base --iterations=1 bzip2
 	or
 	runspec --config=test.cfg --size=ref --noreportable --tune=base --iterations=1 bzip2
+
+6. Remove a benchmark completely(e.g. bzip2)
+
+        runspec --action=scrub bzip2
+
 
 Other benchmarks: 
 perlbench bzip2 gcc mcf milc namd gobmk soplex povray hmmer sjeng libquantum h264ref lbm omnetpp astar
