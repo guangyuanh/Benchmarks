@@ -26,7 +26,13 @@ mkdir spec06 SpecCpu2006
 		CXX          = /usr/bin/g++
 		#FC           = /usr/local/sles9/gcc42-0325/bin/gfortran
 
-		#add library cstdlib cstring for 483. axlancbmk otherwise it will fail to build
+		#add library cstdlib cstring for 483. xalancbmk otherwise it will fail to build
+		#ErrorInfo:
+		#FormatterToHTML.cpp: In member function 'void xalanc_1_8::FormatterToHTML::initCharsMap()':
+		#FormatterToHTML.cpp:139:42: error: 'memset' was not declared in this scope
+		#  memset(m_charsMap, 0, sizeof(m_charsMap));
+		#                                          ^
+		#specmake: *** [FormatterToHTML.o] Error 1 
 		#####################################################################
 		# Optimization
 		#####################################################################
